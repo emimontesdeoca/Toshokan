@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace Toshokan.Applications.Webapp.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/core@latest/dist/css/tabler.min.css">
+    @*<link href="css/app.css" rel="stylesheet" />*@
+    <link href="Toshokan.Applications.Webapp.styles.css" rel="stylesheet" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+<body class="theme-light">
+    @RenderBody()
+
+    <script src="_framework/blazor.server.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@tabler/core@latest/dist/js/tabler.min.js"></script>
+</body>
+</html>

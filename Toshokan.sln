@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Webapps", "1. Webapps", "{361E470A-9E2C-4037-BF1F-DDF6BE13B302}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Applications", "1. Applications", "{361E470A-9E2C-4037-BF1F-DDF6BE13B302}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Functions", "2. Functions", "{13D8B91D-CB79-4EB4-908A-2183A1C4A4F0}"
 EndProject
@@ -11,23 +11,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Libraries", "3. Librarie
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Testing", "4. Testing", "{F3E81BA3-9463-44E8-8630-1E007ADD7803}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Libraries.Data", "Toshokan.Libraries.Data\Toshokan.Libraries.Data.csproj", "{BD7CDCFA-21EF-4C21-9A71-BDF5ACF5F9B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Libraries.Data", "Toshokan.Libraries.Data\Toshokan.Libraries.Data.csproj", "{BD7CDCFA-21EF-4C21-9A71-BDF5ACF5F9B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Functions.EpisodeFetcher", "Toshokan.Functions.EpisodeFetcher\Toshokan.Functions.EpisodeFetcher.csproj", "{5416E439-3984-43BD-8D3E-573F4199FDD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Functions.EpisodeFetcher", "Toshokan.Functions.EpisodeFetcher\Toshokan.Functions.EpisodeFetcher.csproj", "{5416E439-3984-43BD-8D3E-573F4199FDD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Functions.PageFetcher", "Toshokan.Functions.PageFetcher\Toshokan.Functions.PageFetcher.csproj", "{C6BA9193-2917-43AD-BBB3-E06534321610}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Functions.PageFetcher", "Toshokan.Functions.PageFetcher\Toshokan.Functions.PageFetcher.csproj", "{C6BA9193-2917-43AD-BBB3-E06534321610}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Functions.Cleaner", "Toshokan.Functions.Cleaner\Toshokan.Functions.Cleaner.csproj", "{7E3999E3-5792-44BD-AC13-FC54485F9C83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Functions.Cleaner", "Toshokan.Functions.Cleaner\Toshokan.Functions.Cleaner.csproj", "{7E3999E3-5792-44BD-AC13-FC54485F9C83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Libraries.Models", "Toshokan.Libraries.Models\Toshokan.Libraries.Models.csproj", "{BA840F92-3DED-49BC-9E63-E6B438EB1001}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Libraries.Models", "Toshokan.Libraries.Models\Toshokan.Libraries.Models.csproj", "{BA840F92-3DED-49BC-9E63-E6B438EB1001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Libraries.Services", "Toshokan.Libraries.Services\Toshokan.Libraries.Services.csproj", "{B86537F0-0CC3-404A-AC2D-527301424C69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Libraries.Services", "Toshokan.Libraries.Services\Toshokan.Libraries.Services.csproj", "{B86537F0-0CC3-404A-AC2D-527301424C69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Libraries.Shared", "Toshokan.Libraries.Shared\Toshokan.Libraries.Shared.csproj", "{11ECB66D-32A5-44FF-8863-3902C05EBCDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Libraries.Shared", "Toshokan.Libraries.Shared\Toshokan.Libraries.Shared.csproj", "{11ECB66D-32A5-44FF-8863-3902C05EBCDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Functions.MangaFetcher", "Toshokan.Functions.MangaFetcher\Toshokan.Functions.MangaFetcher.csproj", "{926CE160-117D-4344-927D-85C0704D8751}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Functions.MangaFetcher", "Toshokan.Functions.MangaFetcher\Toshokan.Functions.MangaFetcher.csproj", "{926CE160-117D-4344-927D-85C0704D8751}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Testing.ConsoleApp", "Toshokan.Testing.ConsoleApp\Toshokan.Testing.ConsoleApp.csproj", "{6FF01F06-2B53-464A-B784-2CE94EE79BE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Testing.ConsoleApp", "Toshokan.Testing.ConsoleApp\Toshokan.Testing.ConsoleApp.csproj", "{6FF01F06-2B53-464A-B784-2CE94EE79BE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toshokan.Applications.Webapp", "Toshokan.Applications.Webapp\Toshokan.Applications.Webapp.csproj", "{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{6FF01F06-2B53-464A-B784-2CE94EE79BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FF01F06-2B53-464A-B784-2CE94EE79BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FF01F06-2B53-464A-B784-2CE94EE79BE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{11ECB66D-32A5-44FF-8863-3902C05EBCDE} = {4BE6EE7B-B14F-429D-860D-3485878B7AFA}
 		{926CE160-117D-4344-927D-85C0704D8751} = {13D8B91D-CB79-4EB4-908A-2183A1C4A4F0}
 		{6FF01F06-2B53-464A-B784-2CE94EE79BE8} = {F3E81BA3-9463-44E8-8630-1E007ADD7803}
+		{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6} = {361E470A-9E2C-4037-BF1F-DDF6BE13B302}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09A8438D-EDFA-4392-AB5D-F7A8212DB275}

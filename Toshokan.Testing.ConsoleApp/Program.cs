@@ -17,7 +17,7 @@ var serviceProvider = new ServiceCollection()
 
 var initializer = serviceProvider.GetService<DbInitialiser>();
 
-//initializer.Run();
+initializer.Run();
 
 // Add test manga
 
