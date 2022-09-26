@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Toshokan.Functions.EpisodeFetcher": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

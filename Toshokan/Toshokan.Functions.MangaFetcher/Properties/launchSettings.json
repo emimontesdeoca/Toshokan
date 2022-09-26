@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Toshokan.Functions.MangaFetcher": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

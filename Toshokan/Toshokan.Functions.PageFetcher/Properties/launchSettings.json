@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Toshokan.Functions.PageFetcher": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
