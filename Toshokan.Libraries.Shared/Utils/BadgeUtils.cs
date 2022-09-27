@@ -10,7 +10,11 @@ namespace Toshokan.Libraries.Shared.Utils
     {
         public static string[] SplitForBadges(string data)
         {
-            return data.Split(",");
+            if (data != null)
+            {
+                return data.Split(",");
+            }
+            return new string[0];
         }
     }
 }

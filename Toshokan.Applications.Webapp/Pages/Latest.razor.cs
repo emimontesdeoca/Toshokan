@@ -14,26 +14,20 @@ using Microsoft.JSInterop;
 using Toshokan.Applications.Webapp;
 using Toshokan.Applications.Webapp.Shared;
 using Toshokan.Applications.Webapp.Components;
-using Toshokan.Libraries.Services;
 using Toshokan.Libraries.Models;
+using Toshokan.Libraries.Services;
 
-namespace Toshokan.Applications.Webapp.Shared
+namespace Toshokan.Applications.Webapp.Pages
 {
-    public partial class Header
+    public partial class Latest
     {
-        #region Injects
-
         [Inject]
         public DataService DataService { get; set; }
 
-        #endregion
 
+        #region Library
 
-        #region Properties
-
-        public List<Notification> Notifications { get; set; }
-
-        public NewMangaModalComponent NewMangaModalComponent { get; set; } = new NewMangaModalComponent();
+        public List<Libraries.Models.Manga> MangaList { get; set; }
 
         #endregion
 
@@ -41,10 +35,8 @@ namespace Toshokan.Applications.Webapp.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            this.Notifications = await DataService.GetNotifications(0, 5);
+            this.MangaList = await DataService.GetLatestMangaProcessed(0, int.MaxValue);
         }
-
-        public async Task OpenModal() => this.NewMangaModalComponent.Toggle();
 
         #endregion
     }

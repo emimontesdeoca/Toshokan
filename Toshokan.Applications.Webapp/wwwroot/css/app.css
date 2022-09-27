@@ -9,3 +9,8 @@
     min-height: 190px !important;
     max-height: 190px !important;
 }
+
+
+.modal-blur {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}

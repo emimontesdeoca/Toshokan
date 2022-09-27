@@ -1,0 +1,23 @@
+﻿<div class="modal modal-blur fade @(State ? "show" : "")" id="modal-team" tabindex="-1" style='@(State ? "display: block;" : "")' aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a new manga</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="@Toggle"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3 align-items-end">
+                    <div class="col">
+                        <label class="form-label">Url</label>
+                        <input @bind=@this.Url type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal" @onclick="@Toggle">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="@AddManga">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -64,6 +64,7 @@ namespace Toshokan.Libraries.Services
             var query = from episode in Context.Episodes
                         join manga in Context.Mangas
                             on episode.MangaId equals manga.Id
+                        where episode.Processed
                         orderby episode.UpdatedAt descending
 
                         select new EpisodeAdded()
@@ -79,7 +80,19 @@ namespace Toshokan.Libraries.Services
 
         public async Task<List<Manga>> GetLatestManga(int skip, int take)
         {
-            return await this.Context.Mangas.OrderByDescending(x => x.CreatedAt).Skip(skip).Take(take).AsNoTracking().ToListAsync();
+            return await this.Context.Mangas.Where(x => x.Processed).OrderByDescending(x => x.CreatedAt).Skip(skip).Take(take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<List<Manga>> GetAllManga()
+        {
+            return await this.Context.Mangas.OrderBy(x => x.Name).AsNoTracking().ToListAsync();
+        }
+
+        public async Task AddManga(string url)
+        {
+            var manga = new Manga(url);
+            await Context.Mangas.AddAsync(manga);
+            await Context.SaveChangesAsync();
         }
     }
 }
