@@ -13,10 +13,11 @@
     <link href="Toshokan.Applications.Webapp.styles.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
-<body class="theme-light modeal-open">
+<body>
     @RenderBody()
 
-    <script src="_framework/blazor.server.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@tabler/core@latest/dist/js/tabler.min.js"></script>
+    <script src="~/js/app.js"></script>
+    <script src="_framework/blazor.server.js"></script>
 </body>
 </html>

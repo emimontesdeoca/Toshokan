@@ -16,28 +16,18 @@ using Toshokan.Applications.Webapp.Shared;
 using Toshokan.Applications.Webapp.Components;
 using Toshokan.Libraries.Services;
 using Toshokan.Libraries.Models;
-using System.Text.Json;
 
-namespace Toshokan.Applications.Webapp.Shared
+namespace Toshokan.Applications.Webapp.Pages
 {
-    public partial class Header
+    public partial class Notifications
     {
-        #region Injects
-
         [Inject]
         public DataService DataService { get; set; }
 
-        [Inject]
-        public IJSRuntime IJSRuntime { get; set; }
 
-        #endregion
+        #region Library
 
-
-        #region Properties
-
-        public List<Notification> Notifications { get; set; }
-
-        public NewMangaModalComponent NewMangaModalComponent { get; set; } = new NewMangaModalComponent();
+        public List<Notification> NotificationsList { get; set; }
 
         #endregion
 
@@ -45,12 +35,14 @@ namespace Toshokan.Applications.Webapp.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            this.Notifications = await DataService.GetNotifications(0, 5);
+            this.NotificationsList = await DataService.GetNotifications(0, 50);
         }
 
-        public async Task ToggleTheme() => await IJSRuntime.InvokeVoidAsync("toggleTheme");
-
-        public async Task OpenModal() => this.NewMangaModalComponent.Toggle();
+        public async Task DeleteNotifications()
+        {
+            await DataService.DeleteNotifications();
+            this.NotificationsList = await DataService.GetNotifications(0, 50);
+        }
 
         #endregion
     }

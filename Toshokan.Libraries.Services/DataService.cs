@@ -53,6 +53,11 @@ namespace Toshokan.Libraries.Services
             return await this.Context.Notifications.OrderByDescending(x => x.CreatedAt).Skip(skip).Take(take).AsNoTracking().ToListAsync();
         }
 
+        public async Task DeleteNotifications()
+        {
+            await Context.Database.ExecuteSqlRawAsync("TRUNCATE table dbo.Notifications");
+        }
+
         public async Task<List<Manga>> GetLatestMangaProcessed(int skip, int take)
         {
             return await this.Context.Mangas.Where(x => x.Processed).OrderByDescending(x => x.CreatedAt).Skip(skip).Take(take).AsNoTracking().ToListAsync();
