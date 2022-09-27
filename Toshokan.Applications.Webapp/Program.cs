@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddDbContext<Context>(
-        options => options.UseSqlServer("Server=.;Database=Toshokan;Trusted_Connection=True;"));
+        options => options.UseSqlServer("Server=.;Database=Toshokan;Trusted_Connection=True;"), ServiceLifetime.Transient);
 builder.Services.AddTransient<DataService>();
 
 var app = builder.Build();
