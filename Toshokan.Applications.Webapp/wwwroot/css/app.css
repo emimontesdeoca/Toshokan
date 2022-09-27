@@ -1,0 +1,11 @@
+.card-manga-ratio {
+    height: 150px !important;
+    min-height: 150px !important;
+    max-height: 150px !important;
+}
+
+.episode-manga-ratio {
+    height: 190px !important;
+    min-height: 190px !important;
+    max-height: 190px !important;
+}

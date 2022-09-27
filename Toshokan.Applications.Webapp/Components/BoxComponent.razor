@@ -1,5 +1,29 @@
-﻿<h3>BoxComponent</h3>
+﻿@if (Loading)
+{
+    <div class="card placeholder-glow">
+        <div class="card-body mt-3 mb-3 text-center">
+            <div class="placeholder placeholder-xs mb-2 col-6 text-center"></div>
+            <div class="placeholder placeholder col-6"></div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body mt-2 mb-2">
+            <div class="d-flex mb-2 justify-content-center align-items-center">
+                <div class="subheader text-center">@Title</div>
+            </div>
+            <div class="h1 text-center">@SubTitle</div>
+        </div>
+    </div>
+}
 
 @code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string SubTitle { get; set; }
 
+    public bool Loading => string.IsNullOrEmpty(SubTitle) || string.IsNullOrEmpty(Title);
 }

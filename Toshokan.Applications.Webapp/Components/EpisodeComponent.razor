@@ -1,0 +1,45 @@
+﻿@if (Loading)
+{
+    <div class="card card placeholder-glow">
+        <div class="row row-0">
+            <div class="col-5">
+                <div class="ratio card-manga-ratio ratio-1x1 episode-manga-ratio placeholder"></div>
+            </div>
+            <div class="col">
+                <div class="card-body">
+                    <div class="placeholder col-11 mt-2"></div>
+                    <div class="placeholder col-10"></div>
+                    <div class="placeholder col-8"></div>
+                    <div class="placeholder col-9"></div>
+                    <div class="placeholder col-8"></div>
+                    <div class="placeholder col-10"></div>
+                    <div class="placeholder col-5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="row row-0">
+            <div class="col-5">
+                <img src="@Image" class="w-100 h-100 object-cover" alt="Card side image">
+            </div>
+            <div class="col">
+                <div class="card-body">
+                    <h3 >@Title</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Image { get; set; }
+
+    public bool Loading => string.IsNullOrEmpty(Title) || string.IsNullOrEmpty(Image);
+}
