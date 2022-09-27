@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Toshokan.Applications.Webapp.Data;
+using Microsoft.EntityFrameworkCore;
+using Toshokan.Libraries.Data;
+using Toshokan.Libraries.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddDbContext<Context>(
+        options => options.UseSqlServer("Server=.;Database=Toshokan;Trusted_Connection=True;"));
+builder.Services.AddTransient<DataService>();
 
 var app = builder.Build();
 

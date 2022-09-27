@@ -2,7 +2,6 @@
 
 <PageTitle>Index</PageTitle>
 
-
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
@@ -23,22 +22,22 @@
                     </div>
 
                     <div class="col-4">
-                        <BoxComponent Title="Total mangas" SubTitle="150" />
+                        <BoxComponent Title="Total mangas" SubTitle="@TotalMangas.ToString()" />
                     </div>
                     <div class="col-4">
-                        <BoxComponent Title="Total episodes" SubTitle="650" />
+                        <BoxComponent Title="Total episodes" SubTitle="@TotalEpisodes.ToString()" />
                     </div>
                     <div class="col-4">
-                        <BoxComponent Title="Total pages" SubTitle="Test" />
+                        <BoxComponent Title="Total pages" SubTitle="@TotalPages.ToString()" />
                     </div>
                     <div class="col-4">
-                        <BoxComponent Title="New mangas today" SubTitle="" />
+                        <BoxComponent Title="New mangas today" SubTitle="@TotalMangasToday.ToString()" />
                     </div>
                     <div class="col-4">
-                        <BoxComponent Title="New episodes today" SubTitle="6" />
+                        <BoxComponent Title="New episodes today" SubTitle="@TotalEpisodesToday.ToString()" />
                     </div>
                     <div class="col-4">
-                        <BoxComponent Title="New pages today" SubTitle="196" />
+                        <BoxComponent Title="New pages today" SubTitle="@TotalPagesToday.ToString()" />
                     </div>
                 </div>
             </div>
@@ -55,42 +54,62 @@
                                 Latest notificatons
                             </h2>
                         </div>
-                        <div class="col-12 col-md-auto ms-auto d-print-none">
-                            <div class="btn-list">
-                                <a href="#" class="btn btn-outline-dark d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5" />
-                                        <line x1="10" y1="14" x2="20" y2="4" />
-                                        <polyline points="15 4 20 4 20 9" />
-                                    </svg>
-                                    View all notifications
-                                </a>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="col-12">
                         <div class="card" style="height: 14.2rem">
                             <div class="card-body card-body-scrollable card-body-scrollable-shadow">
                                 <div class="divide-y">
-                                    <div>
-                                        <div class="row">
-                                            <div class="col-auto">
-                                                <span class="avatar">JL</span>
-                                            </div>
-                                            <div class="col">
-                                                <div class="text-truncate">
-                                                    <strong>Jeffie Lewzey</strong> commented on your <strong>"I'm not a witch."</strong> post.
+
+                                    @if (this.LatestNotifications == null)
+                                    {
+                                        for (var i = 0; i < 10; i++)
+                                        {
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <span class="avatar">NO</span>
                                                 </div>
-                                                <div class="text-muted">yesterday</div>
+                                                <div class="col">
+                                                    <div class="text-truncate ">
+                                                        <div class="placeholder col-9 mb-2"></div>
+                                                    </div>
+                                                    <div class="text-muted">
+                                                        <div class="placeholder  placeholder-xs col-6"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto align-self-center">
+                                                    <div class="badge bg-primary"></div>
+                                                </div>
                                             </div>
-                                            <div class="col-auto align-self-center">
-                                                <div class="badge bg-primary"></div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in this.LatestNotifications)
+                                        {
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <span class="avatar">NO</span>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="text-truncate">
+                                                        @item.Message
+                                                    </div>
+                                                    <div class="text-muted">@item.CreatedAt.ToString()</div>
+                                                </div>
+                                                <div class="col-auto align-self-center">
+                                                    <a href="@item.Link">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5" />
+                                                            <line x1="10" y1="14" x2="20" y2="4" />
+                                                            <polyline points="15 4 20 4 20 9" />
+                                                        </svg>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        }
+                                    }
                                 </div>
                             </div>
 
@@ -113,40 +132,28 @@
                                 Latest processed
                             </h2>
                         </div>
-                        <div class="col-12 col-md-auto ms-auto d-print-none">
-                            <div class="btn-list">
-                                <a href="/library" class="btn btn-outline-dark d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5" />
-                                        <line x1="10" y1="14" x2="20" y2="4" />
-                                        <polyline points="15 4 20 4 20 9" />
-                                    </svg>
-                                    View latest processed
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-md-4 col-sm-6">
-                        <CardComponent />
-                    </div>
-                    <div class="col-xl-2 col-md-4 col-sm-6">
-                        <CardComponent Image="https://avt.mkklcdnv6temp.com/12/b/24-1620363350.jpg" Title="I'm a Middle-Aged Man Who Got My Adventurer License Revoked" />
-                    </div>
-                    <div class="col-xl-2 col-md-4 col-sm-6">
-                        <CardComponent Image="https://avt.mkklcdnv6temp.com/12/b/24-1620363350.jpg" Title="A Story About a Dragon and the Rising of an Adventurer" />
-                    </div>
-                    <div class="col-xl-2 col-md-4 col-sm-6">
-                        <CardComponent />
-                    </div>
-                    <div class="col-xl-2 col-md-4 col-sm-6">
-                        <CardComponent />
-                    </div>
-                    <div class="col-xl-2 col-md-4 col-sm-6">
-                        <CardComponent Image="https://avt.mkklcdnv6temp.com/12/b/24-1620363350.jpg" Title="Ryuu Kusari no Ori -Kokoro no Uchi no Kokoro-" />
                     </div>
 
+                    @if (LatestMangasProcessed == null)
+                    {
+                        for (var i = 0; i < 6; i++)
+                        {
+                            <div class="col-xl-2 col-md-4 col-sm-6">
+                                <CardComponent />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in LatestMangasProcessed)
+                        {
+                            <div class="col-xl-3 col-md-4 col-sm-6">
+                                <a href="/manga/@item.Id">
+                                    <CardComponent Image="@item.Poster" Title="@item.Name" />
+                                </a>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
         </div>
@@ -164,35 +171,28 @@
                                 Latest added
                             </h2>
                         </div>
-                        <div class="col-12 col-md-auto ms-auto d-print-none">
-                            <div class="btn-list">
-                                <a href="/latest" class="btn btn-outline-dark d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5" />
-                                        <line x1="10" y1="14" x2="20" y2="4" />
-                                        <polyline points="15 4 20 4 20 9" />
-                                    </svg>
-                                    View latest updated
+                    </div>
+
+                    @if (LatestEpisodeAdded == null)
+                    {
+                        for (var i = 0; i < 6; i++)
+                        {
+                            <div class="col-xl-3 col-md-4 col-sm-6">
+                                <EpisodeComponent />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in LatestEpisodeAdded)
+                        {
+                            <div class="col-xl-3 col-md-4 col-sm-6">
+                                <a href="/episode/@item.Id">
+                                    <EpisodeComponent Image="@item.Poster" Title="@item.Name" />
                                 </a>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-4 col-sm-6">
-                        <EpisodeComponent />
-                    </div>
-                    <div class="col-xl-3 col-md-4 col-sm-6">
-                        <EpisodeComponent Image="https://avt.mkklcdnv6temp.com/12/b/24-1620363350.jpg" Title="Chapter 15: The Sage's Cave" />
-                    </div>
-                    <div class="col-xl-3 col-md-4 col-sm-6">
-                        <EpisodeComponent Image="https://avt.mkklcdnv6temp.com/12/b/24-1620363350.jpg" Title="A Story About a Dragon and the Rising of an Adventurer" />
-                    </div>
-
-                    <div class="col-xl-3 col-md-4 col-sm-6">
-                        <EpisodeComponent Image="https://avt.mkklcdnv6temp.com/12/b/24-1620363350.jpg" Title="Ryuu Kusari no Ori -Kokoro no Uchi no Kokoro-" />
-                    </div>
-
+                        }
+                    }
                 </div>
             </div>
         </div>
@@ -211,20 +211,6 @@
                                 Library
                             </h2>
                         </div>
-                        <div class="col-12 col-md-auto ms-auto d-print-none">
-                            <div class="btn-list">
-                                <a href="#" class="btn btn-outline-dark d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5" />
-                                        <line x1="10" y1="14" x2="20" y2="4" />
-                                        <polyline points="15 4 20 4 20 9" />
-                                    </svg>
-                                    View all library
-                                </a>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-12">
                         <div class="card">
@@ -240,20 +226,48 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                Isekai de Cheat Skill wo te ni Shita ore wa, Genjitsu Sekai wo mo Musou Suru ~Level Up wa Jinsei wo Kaeta~
-                                                <a href="#" class="ms-1" aria-label="Open website">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/link -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg>
-                                                </a>
+                                        @if (this.MangaList == null)
+                                        {
 
-                                            </td>
-                                            <td class="text-muted">Minatogawa Kazuomi, Miku</td>
-                                            <td class="text-muted">Action, Adventure, Fantasy</td>
-                                            <td class="text-muted">2022-09-26 20:55:42</td>
-                                            <td class="text-muted">2022-09-26 20:58:30</td>
-                                        </tr>
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in this.MangaList)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.Name
+                                                        <a href="/manga/@item.Id" class="ms-1" aria-label="Open website">
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/link -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg>
+                                                        </a>
+
+                                                    </td>
+                                                    <td class="text-muted">
+                                                        @{
+                                                            var authors = Libraries.Shared.Utils.BadgeUtils.SplitForBadges(item.Authors);
+
+                                                            foreach (var author in authors)
+                                                            {
+                                                                <span class="badge badge-outline text-azure me-1 mb-1">@author.Trim()</span>
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td class="text-muted">
+                                                        @{
+                                                            var genres = Libraries.Shared.Utils.BadgeUtils.SplitForBadges(item.Genres);
+
+                                                            foreach (var genre in genres)
+                                                            {
+                                                                <span class="badge badge-outline text-azure me-1 mb-1">@genre.Trim()</span>
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td class="text-muted">@item.CreatedAt.ToString()</td>
+                                                    <td class="text-muted">@item.UpdatedAt.ToString()</td>
+                                                </tr>
+                                            }
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -267,4 +281,6 @@
 
     </div>
 </div>
+
+
 
