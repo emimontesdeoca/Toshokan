@@ -96,7 +96,10 @@ namespace Toshokan.Libraries.Services
         public async Task AddManga(string url)
         {
             var manga = new Manga(url);
+            var notification = new Notification($"New manga added with link '{url}'", $"/manga/{manga.Id}");
+
             await Context.Mangas.AddAsync(manga);
+            await Context.Notifications.AddAsync(notification);
             await Context.SaveChangesAsync();
         }
     }

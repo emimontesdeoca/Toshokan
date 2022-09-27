@@ -17,6 +17,7 @@ namespace Toshokan.Libraries.Models
         {
         }
 
+
         public Notification(string message, string link)
         {
             this.Id = Guid.NewGuid();

@@ -22,5 +22,5 @@ initializer.Run();
 while (true)
 {
     await service.Process();
-    await Task.Delay(TimeSpan.FromMinutes(5));
+    await Task.Delay(TimeSpan.FromMinutes(1));
 }

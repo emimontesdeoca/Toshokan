@@ -86,30 +86,44 @@
                                     }
                                     else
                                     {
-                                        foreach (var item in this.LatestNotifications)
+                                        @if (this.LatestNotifications.Count > 0)
                                         {
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar">NO</span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        @item.Message
+                                            foreach (var item in this.LatestNotifications)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <span class="avatar">NO</span>
                                                     </div>
-                                                    <div class="text-muted">@item.CreatedAt.ToString()</div>
+                                                    <div class="col">
+                                                        <div class="text-truncate">
+                                                            @item.Message
+                                                        </div>
+                                                        <div class="text-muted">@item.CreatedAt.ToString()</div>
+                                                    </div>
+                                                    <div class="col-auto align-self-center">
+                                                        <a href="@item.Link">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5" />
+                                                                <line x1="10" y1="14" x2="20" y2="4" />
+                                                                <polyline points="15 4 20 4 20 9" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                                <div class="col-auto align-self-center">
-                                                    <a href="@item.Link">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5" />
-                                                            <line x1="10" y1="14" x2="20" y2="4" />
-                                                            <polyline points="15 4 20 4 20 9" />
-                                                        </svg>
-                                                    </a>
-                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="empty">
+                                                <p class="empty-title">No results found</p>
+                                                <p class="empty-subtitle text-muted">
+                                                    There are no notifications.
+                                                </p>
                                             </div>
                                         }
+
+
                                     }
                                 </div>
                             </div>
@@ -146,12 +160,24 @@
                     }
                     else
                     {
-                        foreach (var item in LatestMangasProcessed)
+                        @if (LatestMangasProcessed.Count > 0)
                         {
-                            <div class="col-xl-3 col-md-4 col-sm-6">
-                                <a href="/manga/@item.Id">
-                                    <CardComponent Image="@item.Poster" Title="@item.Name" />
-                                </a>
+                            foreach (var item in LatestMangasProcessed)
+                            {
+                                <div class="col-xl-3 col-md-4 col-sm-6">
+                                    <a href="/manga/@item.Id">
+                                        <CardComponent Image="@item.Poster" Title="@item.Name" />
+                                    </a>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="empty">
+                                <p class="empty-title">No results found</p>
+                                <p class="empty-subtitle text-muted">
+                                    There are no mangas.
+                                </p>
                             </div>
                         }
                     }
@@ -185,12 +211,24 @@
                     }
                     else
                     {
-                        foreach (var item in LatestEpisodeAdded)
+                        if (LatestEpisodeAdded.Count > 0)
                         {
-                            <div class="col-xl-3 col-md-4 col-sm-6">
-                                <a href="/episode/@item.Id">
-                                    <EpisodeComponent Image="@item.Poster" Title="@item.Name" />
-                                </a>
+                            foreach (var item in LatestEpisodeAdded)
+                            {
+                                <div class="col-xl-3 col-md-4 col-sm-6">
+                                    <a href="/episode/@item.Id">
+                                        <EpisodeComponent Image="@item.Poster" Title="@item.Name" />
+                                    </a>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="empty">
+                                <p class="empty-title">No results found</p>
+                                <p class="empty-subtitle text-muted">
+                                    There are no episodes.
+                                </p>
                             </div>
                         }
                     }
@@ -229,46 +267,82 @@
                                     <tbody>
                                         @if (this.MangaList == null)
                                         {
-
-                                        }
-                                        else
-                                        {
-                                            foreach (var item in this.MangaList)
+                                            for (var i = 0; i < 10; i++)
                                             {
-                                                <tr>
+                                                <tr class="placeholder-glow">
                                                     <td>
-                                                        @item.Name
-                                                        <a href="/manga/@item.Id" class="ms-1" aria-label="Open website">
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/link -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg>
-                                                        </a>
-
+                                                        <div class="placeholder placeholder-xs col-10"></div>
                                                     </td>
                                                     <td class="text-muted">
-                                                        @{
-                                                            var authors = Libraries.Shared.Utils.BadgeUtils.SplitForBadges(item.Authors);
-
-                                                            foreach (var author in authors)
-                                                            {
-                                                                <span class="badge badge-outline text-azure me-1 mb-1">@author.Trim()</span>
-                                                            }
-                                                        }
+                                                        <div class="placeholder placeholder-xs col-10"></div>
                                                     </td>
                                                     <td class="text-muted">
-                                                        @{
-                                                            var genres = Libraries.Shared.Utils.BadgeUtils.SplitForBadges(item.Genres);
-
-                                                            foreach (var genre in genres)
-                                                            {
-                                                                <span class="badge badge-outline text-azure me-1 mb-1">@genre.Trim()</span>
-                                                            }
-                                                        }
+                                                        <div class="placeholder placeholder-xs col-10"></div>
                                                     </td>
-                                                    <td class="text-muted">@item.CreatedAt.ToString()</td>
-                                                    <td class="text-muted">@item.UpdatedAt.ToString()</td>
+                                                    <td class="text-muted">
+                                                        <div class="placeholder placeholder-xs col-10"></div>
+                                                    </td>
+                                                    <td class="text-muted">
+                                                        <div class="placeholder placeholder-xs col-10"></div>
+                                                    </td>
                                                 </tr>
                                             }
                                         }
+                                        else
+                                        {
+                                            @if (this.MangaList.Count > 0)
+                                            {
+                                                foreach (var item in this.MangaList)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.Name
+                                                            <a href="/manga/@item.Id" class="ms-1" aria-label="Open website">
+                                                                <!-- Download SVG icon from http://tabler-icons.io/i/link -->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg>
+                                                            </a>
+
+                                                        </td>
+                                                        <td class="text-muted">
+                                                            @{
+                                                                var authors = Libraries.Shared.Utils.BadgeUtils.SplitForBadges(item.Authors);
+
+                                                                foreach (var author in authors)
+                                                                {
+                                                                    <span class="badge badge-outline text-azure me-1 mb-1">@author.Trim()</span>
+                                                                }
+                                                            }
+                                                        </td>
+                                                        <td class="text-muted">
+                                                            @{
+                                                                var genres = Libraries.Shared.Utils.BadgeUtils.SplitForBadges(item.Genres);
+
+                                                                foreach (var genre in genres)
+                                                                {
+                                                                    <span class="badge badge-outline text-azure me-1 mb-1">@genre.Trim()</span>
+                                                                }
+                                                            }
+                                                        </td>
+                                                        <td class="text-muted">@item.CreatedAt.ToString()</td>
+                                                        <td class="text-muted">@item.UpdatedAt.ToString()</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <div class="empty">
+                                                            <p class="empty-title">No results found</p>
+                                                            <p class="empty-subtitle text-muted">
+                                                                There are no mangas.
+                                                            </p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
                                     </tbody>
                                 </table>
                             </div>

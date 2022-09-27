@@ -40,7 +40,7 @@ namespace Toshokan.Libraries.Services
                 var episodeSplit = episodesString
                     .Split(new string[] { "<div class=\"row\">" }, StringSplitOptions.None);
 
-                LogUtils.Log($"Found {episodeSplit.Count() - 1} for '{manga.Name}'");
+                LogUtils.Log($"Found {episodeSplit.Count() - 1} episodes for '{manga.Name}'");
 
                 var order = 0;
                 foreach (var item in episodeSplit.Skip(1).Reverse())

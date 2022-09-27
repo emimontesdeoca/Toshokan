@@ -63,11 +63,8 @@ namespace Toshokan.Libraries.Services
                     // Get data
                     var bytes = await Shared.WebClientUtils.GetDataAsync(url);
 
-                    // Compress
-                    var compressedBytes = Shared.Utils.CompressionUtils.Compress(bytes);
-
-                    // Assign data
-                    page.Data = Convert.ToBase64String(compressedBytes, 0, compressedBytes.Length);
+                    // return data
+                    page.Data = "data:image/png;base64," + Convert.ToBase64String(bytes, 0, bytes.Length);
 
                     // Dates
                     page.CreatedAt = DateTime.UtcNow;
