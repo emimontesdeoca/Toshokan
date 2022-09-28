@@ -88,9 +88,76 @@ namespace Toshokan.Libraries.Services
             return await this.Context.Mangas.Where(x => x.Processed).OrderByDescending(x => x.CreatedAt).Skip(skip).Take(take).AsNoTracking().ToListAsync();
         }
 
-        public async Task<List<Manga>> GetAllManga()
+        public async Task<List<Manga>> GetManga(string? type)
         {
-            return await this.Context.Mangas.OrderBy(x => x.Name).AsNoTracking().ToListAsync();
+            switch (type?.ToLowerInvariant())
+            {
+                case "latest":
+                    return await this.Context.Mangas.Where(x => x.Processed).OrderByDescending(x => x.UpdatedAt).AsNoTracking().ToListAsync();
+                case "newest":
+                    return await this.Context.Mangas.Where(x => x.Processed).OrderByDescending(x => x.CreatedAt).AsNoTracking().ToListAsync();
+                case "processed":
+                    return await this.Context.Mangas.Where(x => x.Processed).OrderBy(x => x.Name).AsNoTracking().ToListAsync();
+                case "unprocessed":
+                    return await this.Context.Mangas.Where(x => !x.Processed).OrderBy(x => x.Name).AsNoTracking().ToListAsync();
+                case "all":
+                default:
+                    return await this.Context.Mangas.OrderBy(x => x.Name).AsNoTracking().ToListAsync();
+            }
+        }
+
+        public async Task<Manga> GetSingleManga(Guid id)
+        {
+            return await this.Context.Mangas.AsNoTracking().SingleAsync(x => x.Id == id);
+        }
+
+        public async Task<Episode> GetSingleEpisode(Guid id)
+        {
+            return await this.Context.Episodes.AsNoTracking().SingleAsync(x => x.Id == id);
+        }
+
+        public async Task<Episode> GetSingleEpisode(Guid id, int order)
+        {
+            return await this.Context.Episodes.AsNoTracking().SingleOrDefaultAsync(x => x.MangaId == id && x.Order == order);
+        }
+
+        public async Task SetReadEpisode(Guid mangaId, Guid episodeId)
+        {
+            var episode = await this.Context.Episodes.SingleAsync(x => x.Id == episodeId && x.MangaId == mangaId);
+
+            episode.Read = true;
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task<List<Episode>> GetEpisodes(Guid id)
+        {
+            return await this.Context.Episodes.AsNoTracking().Where(x => x.MangaId == id).OrderByDescending(x => x.Order).ToListAsync();
+        }
+
+        public async Task<List<Page>> GetPages(Guid mangaId, Guid episodeId)
+        {
+            return await this.Context.Pages.AsNoTracking().Where(x => x.MangaId == mangaId && x.EpisodeId == episodeId).OrderByDescending(x => x.Order).ToListAsync();
+        }
+
+        public async Task Process(Guid id)
+        {
+            var manga = await this.Context.Mangas.SingleAsync(x => x.Id == id);
+            manga.Processed = false;
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task ToggleStatus(Guid id, bool status)
+        {
+            var manga = await this.Context.Mangas.SingleAsync(x => x.Id == id);
+            manga.Enabled = status;
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task Delete(Guid id, bool status)
+        {
+            var manga = await this.Context.Mangas.SingleAsync(x => x.Id == id);
+            manga.Delete = status;
+            await Context.SaveChangesAsync();
         }
 
         public async Task AddManga(string url)

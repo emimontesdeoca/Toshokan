@@ -1,4 +1,5 @@
-﻿@page "/library"
+﻿@page "/library/{type}"
+@page "/library"
 
 <PageTitle>Toshokon → Library</PageTitle>
 
@@ -12,7 +13,7 @@
                     Library
                 </div>
                 <h2 class="page-title">
-                    All mangas
+                    @Title
                 </h2>
             </div>
         </div>
@@ -24,7 +25,7 @@
         <div class="row row-cards">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="table-responsive">
+                    <div class="table mb-0">
                         <table class="table table-vcenter card-table">
                             <thead>
                                 <tr>
@@ -33,8 +34,10 @@
                                     <th>Genres</th>
                                     <th>Enabled</th>
                                     <th>Processed</th>
+                                    <th>To be deleted</th>
                                     <th>Added</th>
                                     <th>Updated</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,6 +47,12 @@
                                     {
                                         <tr class="placeholder-glow">
                                             <td>
+                                                <div class="placeholder placeholder-xs col-10"></div>
+                                            </td>
+                                            <td class="text-muted">
+                                                <div class="placeholder placeholder-xs col-10"></div>
+                                            </td>
+                                            <td class="text-muted">
                                                 <div class="placeholder placeholder-xs col-10"></div>
                                             </td>
                                             <td class="text-muted">
@@ -88,7 +97,7 @@
 
                                                         foreach (var author in authors)
                                                         {
-                                                            <span class="badge badge-outline text-azure me-1 mb-1">@author.Trim()</span>
+                                                            <span class="badge badge-outline text-secondary me-1 mb-1">@author.Trim()</span>
                                                         }
                                                     }
                                                 </td>
@@ -98,7 +107,7 @@
 
                                                         foreach (var genre in genres)
                                                         {
-                                                            <span class="badge badge-outline text-azure me-1 mb-1">@genre.Trim()</span>
+                                                            <span class="badge badge-outline text-secondary me-1 mb-1">@genre.Trim()</span>
                                                         }
                                                     }
                                                 </td>
@@ -126,15 +135,102 @@
                                                         }
                                                     }
                                                 </td>
+                                                <td class="text-muted">
+                                                    @{
+                                                        if (item.Delete)
+                                                        {
+                                                            <span class="badge badge-outline text-red me-1 mb-1">YES</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge badge-outline text-green me-1 mb-1">NO</span>
+                                                        }
+                                                    }
+                                                </td>
                                                 <td class="text-muted">@item.CreatedAt.ToString()</td>
                                                 <td class="text-muted">@item.UpdatedAt.ToString()</td>
+                                                <td class="text-muted">
+                                                    <div class="btn-list flex-nowrap">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-secondary dropdown-toggle align-text-top" data-bs-toggle="dropdown" aria-expanded="true">
+                                                                Actions
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-0.666667px, 39.3333px, 0px);" data-popper-placement="bottom-end">
+                                                                <a class="dropdown-item" @onclick="@(() => Process(item.Id))">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+                                                                        <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+                                                                    </svg>
+
+                                                                    Process again
+                                                                </a>
+
+                                                                @if (item.Enabled)
+                                                                {
+                                                                    <a class="dropdown-item text-yellow" @onclick="@(() => ToggleStatus(item.Id, false))">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-off me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <line x1="3" y1="3" x2="21" y2="21" />
+                                                                            <path d="M17 17v3l-5 -3l-5 3v-13m1.178 -2.818c.252 -.113 .53 -.176 .822 -.176h6a2 2 0 0 1 2 2v7" />
+                                                                        </svg>
+
+                                                                        Disable
+                                                                    </a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a class="dropdown-item" @onclick="@(() => ToggleStatus(item.Id, true))">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2" />
+                                                                        </svg>
+
+                                                                        Enable
+                                                                    </a>
+                                                                }
+
+                                                                @if (item.Delete)
+                                                                {
+                                                                    <a class="dropdown-item text-red" @onclick="@(() => Delete(item.Id, false))">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <line x1="4" y1="7" x2="20" y2="7" />
+                                                                            <line x1="10" y1="11" x2="10" y2="17" />
+                                                                            <line x1="14" y1="11" x2="14" y2="17" />
+                                                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                        </svg>
+
+                                                                        Cancel delete
+                                                                    </a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a class="dropdown-item text-red" @onclick="@(() => Delete(item.Id, true))">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <line x1="4" y1="7" x2="20" y2="7" />
+                                                                            <line x1="10" y1="11" x2="10" y2="17" />
+                                                                            <line x1="14" y1="11" x2="14" y2="17" />
+                                                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                        </svg>
+
+                                                                        Delete
+                                                                    </a>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         }
                                     }
                                     else
                                     {
                                         <tr>
-                                            <td colspan="7">
+                                            <td colspan="8">
                                                 <div class="empty">
                                                     <p class="empty-title">No results found</p>
                                                     <p class="empty-subtitle text-muted">
@@ -154,5 +250,3 @@
         </div>
     </div>
 </div>
-
-

@@ -12,7 +12,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<CleanService>()
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<PageService>();
+var service = serviceProvider.GetService<CleanService>();
 var initializer = serviceProvider.GetService<DbInitialiser>();
 
 initializer.Run();

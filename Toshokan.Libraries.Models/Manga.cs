@@ -6,6 +6,7 @@ namespace Toshokan.Libraries.Models
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
+        public string? AlternativeName { get; set; }
         public string Url { get; set; }
         public string? Genres { get; set; }
         public string? Authors { get; set; }
@@ -26,6 +27,7 @@ namespace Toshokan.Libraries.Models
         {
             this.Id = Guid.NewGuid();
             this.Name = string.Empty;
+            this.AlternativeName = string.Empty;
             this.Url = url;
             this.Enabled = true;
             this.Processed = false;

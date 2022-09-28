@@ -14,30 +14,34 @@ using Microsoft.JSInterop;
 using Toshokan.Applications.Webapp;
 using Toshokan.Applications.Webapp.Shared;
 using Toshokan.Applications.Webapp.Components;
-using Toshokan.Libraries.Models;
 using Toshokan.Libraries.Services;
+using Toshokan.Libraries.Models;
 
 namespace Toshokan.Applications.Webapp.Pages
 {
-    public partial class Latest
+    public partial class Manga
     {
         [Inject]
         public DataService DataService { get; set; }
 
 
-        #region Library
+        [Parameter]
+        public string Id { get; set; }
 
-        public List<Libraries.Models.Manga> MangaList { get; set; }
+        public string Title { get; set; }
 
-        #endregion
+        public Libraries.Models.Manga CurrentManga { get; set; }
 
-        #region Overrides
+        public List<Libraries.Models.Episode>? Episodes { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
-            this.MangaList = await DataService.GetLatestMangaProcessed(0, int.MaxValue);
+            if (!string.IsNullOrEmpty(this.Id))
+            {
+                var parsedGuid = Guid.Parse(this.Id);
+                this.CurrentManga = await DataService.GetSingleManga(parsedGuid);
+                this.Episodes = await DataService.GetEpisodes(parsedGuid);
+            }
         }
-
-        #endregion
     }
 }

@@ -34,6 +34,7 @@ namespace Toshokan.Libraries.Services
 
                 // Get information from HTML
                 manga.Name = this.GetName(data);
+                manga.AlternativeName = this.GetAlternativeName(data);
                 manga.Genres = this.GetGenres(data);
                 manga.Authors = this.GetAuthors(data);
                 manga.Status = this.GetStatus(data);
@@ -70,6 +71,16 @@ namespace Toshokan.Libraries.Services
                 .Split(new string[] { "</h1>" }, StringSplitOptions.None)[0];
 
             return name.Trim();
+        }
+
+        private string GetAlternativeName(string data)
+        {
+            var name = data
+                .Split(new string[] { "<h2 class=\"story-alternative\">" }, StringSplitOptions.None)[1]
+                .Split(new string[] { "Alternative :" }, StringSplitOptions.None)[1]
+                .Split(new string[] { "</h2>" }, StringSplitOptions.None)[0];
+
+            return name.Replace(";", ",").Trim();
         }
 
         private bool GetStatus(string data)

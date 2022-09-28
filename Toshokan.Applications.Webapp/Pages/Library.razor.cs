@@ -16,6 +16,7 @@ using Toshokan.Applications.Webapp.Shared;
 using Toshokan.Applications.Webapp.Components;
 using Toshokan.Libraries.Models;
 using Toshokan.Libraries.Services;
+using System.ComponentModel;
 
 namespace Toshokan.Applications.Webapp.Pages
 {
@@ -24,6 +25,12 @@ namespace Toshokan.Applications.Webapp.Pages
         [Inject]
         public DataService DataService { get; set; }
 
+        [Parameter]
+        public string? Type { get; set; }
+
+
+        public string Title { get; set; }
+
 
         #region Library
 
@@ -31,11 +38,58 @@ namespace Toshokan.Applications.Webapp.Pages
 
         #endregion
 
+        #region Actions
+
+        public async Task Process(Guid id)
+        {
+            await DataService.Process(id);
+            await Load();
+        }
+        public async Task ToggleStatus(Guid id, bool status)
+        {
+            await DataService.ToggleStatus(id, status);
+            await Load();
+        }
+        public async Task Delete(Guid id, bool status)
+        {
+            await DataService.Delete(id, status);
+            await Load();
+        }
+
+        public async Task Load()
+        {
+            this.MangaList = null;
+
+            switch (Type?.ToLowerInvariant())
+            {
+                case "latest":
+                    Title = "Latest mangas updated";
+                    break;
+                case "newest":
+                    Title = "Newest mangas added";
+                    break;
+                case "processed":
+                    Title = "Processed mangas";
+                    break;
+                case "unprocessed":
+                    Title = "Unprocessed mangas";
+                    break;
+                case "all":
+                default:
+                    Title = "All mangas";
+                    break;
+            }
+
+            this.MangaList = await DataService.GetManga(this.Type);
+        }
+
+        #endregion
+
         #region Overrides
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
-            this.MangaList = await DataService.GetAllManga();
+            await Load();
         }
 
         #endregion

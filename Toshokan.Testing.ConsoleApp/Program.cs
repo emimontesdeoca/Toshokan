@@ -20,9 +20,3 @@ var initializer = serviceProvider.GetService<DbInitialiser>();
 initializer.Run();
 
 // Add test manga
-
-var manga = new Manga("https://mangakakalot.com/read-mo5of158504931270");
-
-var db = serviceProvider.GetService<Context>();
-db.Mangas.Add(manga);
-db.SaveChanges();

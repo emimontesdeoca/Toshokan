@@ -23,3 +23,12 @@ function toggleTheme() {
     }
 }
 
+
+function hideDropdownClick() {
+    var firstEle = document.getElementById("top-dropdown");
+    var secondEle = document.getElementById("bot-dropdown");
+
+    firstEle.className = "nav-link dropdown-toggle";
+    secondEle.className = "dropdown-menu";
+}
+

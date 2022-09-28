@@ -50,6 +50,8 @@ namespace Toshokan.Applications.Webapp.Shared
 
         public async Task ToggleTheme() => await IJSRuntime.InvokeVoidAsync("toggleTheme");
 
+        public async Task CloseToggle() => await IJSRuntime.InvokeVoidAsync("hideDropdownClick");
+
         public async Task OpenModal() => this.NewMangaModalComponent.Toggle();
 
         #endregion
