@@ -1,17 +1,56 @@
 ﻿<div class="modal modal-blur fade @(State ? "show" : "")" id="modal-team" tabindex="-1" style='@(State ? "display: block;" : "")' aria-modal="true" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add a new manga</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="@Toggle"></button>
             </div>
             <div class="modal-body">
-                <div class="row mb-3 align-items-end">
-                    <div class="col">
-                        <label class="form-label">Url</label>
-                        <input @bind=@this.Url type="text" class="form-control">
+                <div class="row align-items-end">
+                    <div class="col mb-3">
+                        <label class="form-label">Address to manga</label>
+                        <input @bind=@this.Url type="text" class="form-control" placeholder="https://mangakakalot.com/manga/kx926534">
+                    </div>
+                    <label class="form-label">Settings</label>
+                    <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                        <label class="form-selectgroup-item flex-fill">
+                            <input type="checkbox" @bind=Enabled class="form-selectgroup-input">
+                            <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                <div class="me-3">
+                                    <span class="form-selectgroup-check"></span>
+                                </div>
+                                <div class="form-selectgroup-label-content d-flex align-items-center">
+                                    <div>
+                                        <div class="font-weight-medium">Enabled</div>
+                                        <div class="text-muted">Process status, this will postpone the process until is enabled</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="form-selectgroup-item flex-fill">
+                            <input type="checkbox" @bind=ProcessDirectly class="form-selectgroup-input">
+                            <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                <div class="me-3">
+                                    <span class="form-selectgroup-check"></span>
+                                </div>
+                                <div class="form-selectgroup-label-content d-flex align-items-center">
+                                    <div>
+                                        <div class="font-weight-medium">Queue episodes directly</div>
+                                        <div class="text-muted">Process episodes right after adding the manga</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="form-label">Check interval</label>
+                        <div class="btn-group w-100">
+                            <button type="button" class="btn @SetButtonSelected(1)" @onclick=@(() =>SetInterval(1))>1 hour</button>
+                            <button type="button" class="btn @SetButtonSelected(6)" @onclick=@(() =>SetInterval(6))>6 hours</button>
+                            <button type="button" class="btn @SetButtonSelected(12)" @onclick=@(() =>SetInterval(12))>12 hours</button>
+                            <button type="button" class="btn @SetButtonSelected(24)" @onclick=@(() =>SetInterval(24))>24 hours</button>
+                        </div>
                     </div>
                 </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn me-auto" data-bs-dismiss="modal" @onclick="@Toggle">Close</button>

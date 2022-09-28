@@ -15,6 +15,7 @@ namespace Toshokan.Libraries.Models
         public string Url { get; set; }
         public int Order { get; set; }
         public bool Processed { get; set; }
+        public bool Queued { get; set; }
         public bool Read { get; set; }
         public bool Delete { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -24,7 +25,7 @@ namespace Toshokan.Libraries.Models
         {
         }
 
-        public Episode(Guid mangaId, string url, string name, int order)
+        public Episode(Guid mangaId, string url, string name, int order, bool queue)
         {
             // Initial properties
             this.Id = Guid.NewGuid();
@@ -41,6 +42,7 @@ namespace Toshokan.Libraries.Models
             this.Processed = false;
             this.Read = false;
             this.Delete = false;
+            this.Queued = queue;
         }
     }
 }

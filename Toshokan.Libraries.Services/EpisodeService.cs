@@ -21,7 +21,7 @@ namespace Toshokan.Libraries.Services
         public async Task Process()
         {
             LogUtils.Log("Starting EpisodeService process");
-            var processedMangas = await Context.Mangas.Where(x => x.Processed && x.Enabled).ToListAsync();
+            var processedMangas = await Context.Mangas.Where(x => x.Processed && x.Enabled && x.NextCheck < DateTime.UtcNow).ToListAsync();
 
             LogUtils.Log($"{processedMangas.Count} mangas to process");
 
@@ -58,7 +58,7 @@ namespace Toshokan.Libraries.Services
                     if (!(await Context.Episodes.Where(x => x.Url == episodeUrl && x.MangaId == manga.Id).AnyAsync()))
                     {
                         // Create episode
-                        var episode = new Episode(manga.Id, episodeUrl, name, order);
+                        var episode = new Episode(manga.Id, episodeUrl, name, order, manga.ProcessDirectly);
 
                         // Add to context
                         await Context.Episodes.AddAsync(episode);
@@ -71,14 +71,16 @@ namespace Toshokan.Libraries.Services
                         // Create notification
                         var notification = new Notification($"Added '{episode.Name}' episode to '{manga.Name}'", $"/episode/{episode.Id}");
                         await Context.Notifications.AddAsync(notification);
-
-                        // Save everything
-                        await Context.SaveChangesAsync();
-
                     }
 
                     order++;
                 }
+
+                // Update next date to check
+                manga.NextCheck = DateTime.UtcNow.AddHours(manga.Interval);
+
+                // Save everything
+                await Context.SaveChangesAsync();
             }
 
             LogUtils.Log("Finished EpisodeService process");

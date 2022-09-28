@@ -25,7 +25,11 @@ namespace Toshokan.Libraries.Services
         public async Task Process()
         {
             LogUtils.Log("Starting PageService process");
-            var unprocessedEpisodes = await Context.Episodes.Where(x => !x.Processed).OrderBy(x => x.Order).ToListAsync();
+            var unprocessedEpisodes = await Context.Episodes
+                .Where(x => !x.Processed && x.Queued)
+                .OrderBy(x => x.Order)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync();
 
             LogUtils.Log($"{unprocessedEpisodes.Count} episodes to process");
 
@@ -81,6 +85,7 @@ namespace Toshokan.Libraries.Services
 
                 // Update episode
                 episode.Processed = true;
+                episode.Queued = false;
                 episode.UpdatedAt = DateTime.UtcNow;
 
                 // Save

@@ -24,6 +24,8 @@ namespace Toshokan.Applications.Webapp.Pages
         [Inject]
         public DataService DataService { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         [Parameter]
         public string Id { get; set; }
@@ -36,11 +38,34 @@ namespace Toshokan.Applications.Webapp.Pages
 
         protected override async Task OnParametersSetAsync()
         {
+            this.CurrentManga = null;
+            StateHasChanged();
+
             if (!string.IsNullOrEmpty(this.Id))
             {
-                var parsedGuid = Guid.Parse(this.Id);
-                this.CurrentManga = await DataService.GetSingleManga(parsedGuid);
-                this.Episodes = await DataService.GetEpisodes(parsedGuid);
+                var parsed = Guid.TryParse(Id, out var episodeId);
+
+                if (parsed)
+                {
+                    this.CurrentManga = await DataService.GetSingleManga(episodeId);
+                    StateHasChanged();
+
+                    if (this.CurrentManga == null)
+                    {
+                        NavigationManager.NavigateTo("/404");
+                    }
+
+                    this.Episodes = await DataService.GetEpisodes(episodeId);
+                    StateHasChanged();
+                }
+                else
+                {
+                    NavigationManager.NavigateTo("/");
+                }
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/");
             }
         }
     }

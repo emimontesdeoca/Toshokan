@@ -94,70 +94,124 @@
 
         </div>
         <div class="row row-cards mb-3">
-            @if (this.Pages != null)
-            {
-                foreach (var p in this.Pages)
-                {
-                    <img src="@p.Data" />
-                }
-
-                <div class="btn-list d-flex justify-content-center">
-                    @if (this.CurrentEpisode == null)
-                    {
-                        <button class="btn btn-outline-secondary  btn-loading">
-                            Button with
-                        </button>
-                    }
-                    else
-                    {
-                        if (this.PreviousEpisode != null)
-                        {
-                            <a href="/episode/@this.PreviousEpisode.Id" class="btn btn-outline-secondary d-none d-sm-inline-block">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <line x1="5" y1="12" x2="19" y2="12" />
-                                    <line x1="5" y1="12" x2="9" y2="16" />
-                                    <line x1="5" y1="12" x2="9" y2="8" />
-                                </svg>
-                                @this.PreviousEpisode.Name
-                            </a>
-                        }
-                    }
-
-                    @if (this.CurrentEpisode == null)
-                    {
-                        <button class="btn btn-outline-secondary  btn-loading">
-                            Button with
-                        </button>
-                    }
-                    else
-                    {
-                        @if (this.NextEpisode != null)
-                        {
-                            <a href="/episode/@this.NextEpisode.Id" class="btn btn-outline-secondary d-none d-sm-inline-block">
-                                @this.NextEpisode.Name
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <line x1="5" y1="12" x2="19" y2="12" />
-                                    <line x1="15" y1="16" x2="19" y2="12" />
-                                    <line x1="15" y1="8" x2="19" y2="12" />
-                                </svg>
-                            </a>
-                        }
-                    }
-                </div>
-            }
-            else
+            @if (this.CurrentEpisode == null)
             {
                 <div class="d-flex justify-content-center" style="padding: 20rem;">
                     <div class="spinner-border" role="status"></div>
                 </div>
             }
+            else
+            {
+                @if (!this.CurrentEpisode.Processed && !this.CurrentEpisode.Queued)
+                {
+                    <div class="empty">
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-off" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <line x1="3" y1="3" x2="21" y2="21" />
+                                <path d="M17 17v3l-5 -3l-5 3v-13m1.178 -2.818c.252 -.113 .53 -.176 .822 -.176h6a2 2 0 0 1 2 2v7" />
+                            </svg>
+                        </div>
+                        <p class="empty-title">Episode not processed</p>
+                        <p class="empty-subtitle text-muted">
+                            This episode hasn't been processed, <br> you can queue this episode for it to be processed.
+                        </p>
+                        <div class="empty-action">
+                            <button class="btn btn-secondary" @onclick=@QueueEpisode>
+                                Queue now
+                            </button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @if (this.CurrentEpisode.Queued)
+                    {
+                        <div class="empty">
+                            <div class="empty-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rotate" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M19.95 11a8 8 0 1 0 -.5 4m.5 5v-5h-5" />
+                                </svg>
+                            </div>
+                            <p class="empty-title">Episode queued for process</p>
+                            <p class="empty-subtitle text-muted">
+                                This episode is queue for process, it will be available soon
+                            </p>
+                            <div class="empty-action">
+                                <button class="btn btn-secondary" onclick="location.reload()">
+                                    Reload page
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @if (this.Pages != null)
+                        {
+                            foreach (var p in this.Pages)
+                            {
+                                <img src="@p.Data" />
+                            }
+
+                            <div class="btn-list d-flex justify-content-center">
+                                @if (this.CurrentEpisode == null)
+                                {
+                                    <button class="btn btn-outline-secondary  btn-loading">
+                                        Button with
+                                    </button>
+                                }
+                                else
+                                {
+                                    if (this.PreviousEpisode != null)
+                                    {
+                                        <a href="/episode/@this.PreviousEpisode.Id" class="btn btn-outline-secondary d-none d-sm-inline-block">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <line x1="5" y1="12" x2="19" y2="12" />
+                                                <line x1="5" y1="12" x2="9" y2="16" />
+                                                <line x1="5" y1="12" x2="9" y2="8" />
+                                            </svg>
+                                            @this.PreviousEpisode.Name
+                                        </a>
+                                    }
+                                }
+
+                                @if (this.CurrentEpisode == null)
+                                {
+                                    <button class="btn btn-outline-secondary  btn-loading">
+                                        Button with
+                                    </button>
+                                }
+                                else
+                                {
+                                    @if (this.NextEpisode != null)
+                                    {
+                                        <a href="/episode/@this.NextEpisode.Id" class="btn btn-outline-secondary d-none d-sm-inline-block">
+                                            @this.NextEpisode.Name
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <line x1="5" y1="12" x2="19" y2="12" />
+                                                <line x1="15" y1="16" x2="19" y2="12" />
+                                                <line x1="15" y1="8" x2="19" y2="12" />
+                                            </svg>
+                                        </a>
+                                    }
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-center" style="padding: 20rem;">
+                                <div class="spinner-border" role="status"></div>
+                            </div>
+                        }
+                    }
+                }
+            }
         </div>
-
-
     </div>
 </div>
 

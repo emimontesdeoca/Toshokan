@@ -15,7 +15,10 @@ namespace Toshokan.Libraries.Models
         public bool? Status { get; set; }
         public bool Enabled { get; set; }
         public bool Processed { get; set; }
+        public bool ProcessDirectly { get; set; }
         public bool Delete { get; set; }
+        public int Interval { get; set; }
+        public DateTime NextCheck { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
@@ -32,10 +35,11 @@ namespace Toshokan.Libraries.Models
             this.Enabled = true;
             this.Processed = false;
             this.Delete = false;
+            this.ProcessDirectly = false;
+            this.Interval = 1;
             this.CreatedAt = DateTime.UtcNow;
             this.UpdatedAt = DateTime.UtcNow;
+            this.NextCheck = DateTime.UtcNow;
         }
-
-
     }
 }

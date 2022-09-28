@@ -144,8 +144,6 @@ namespace Toshokan.Libraries.Services
                 .Split(new string[] { "</div>" }, StringSplitOptions.None)[0];
 
             summary = summary.Replace("\n", "");
-            summary = summary.Replace("<br>", "\n\n");
-            summary = summary.Replace("<br />", "\n\n");
 
             return summary.Trim();
         }

@@ -129,6 +129,14 @@ namespace Toshokan.Libraries.Services
             await Context.SaveChangesAsync();
         }
 
+        public async Task SetQueueEpisode(Guid mangaId, Guid episodeId)
+        {
+            var episode = await this.Context.Episodes.SingleAsync(x => x.Id == episodeId && x.MangaId == mangaId);
+
+            episode.Queued = true;
+            await Context.SaveChangesAsync();
+        }
+
         public async Task<List<Episode>> GetEpisodes(Guid id)
         {
             return await this.Context.Episodes.AsNoTracking().Where(x => x.MangaId == id).OrderByDescending(x => x.Order).ToListAsync();
@@ -160,9 +168,14 @@ namespace Toshokan.Libraries.Services
             await Context.SaveChangesAsync();
         }
 
-        public async Task AddManga(string url)
+        public async Task AddManga(string url, bool processDirectly, bool enabled, int interval)
         {
             var manga = new Manga(url);
+
+            manga.ProcessDirectly = processDirectly;
+            manga.Enabled = enabled;
+            manga.Interval = interval;
+
             var notification = new Notification($"New manga added with link '{url}'", $"/manga/{manga.Id}");
 
             await Context.Mangas.AddAsync(manga);
