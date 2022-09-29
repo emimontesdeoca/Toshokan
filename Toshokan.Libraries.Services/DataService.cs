@@ -117,7 +117,7 @@ namespace Toshokan.Libraries.Services
             return await this.Context.Episodes.AsNoTracking().SingleAsync(x => x.Id == id);
         }
 
-        public async Task<Episode> GetSingleEpisode(Guid id, int order)
+        public async Task<Episode?> GetSingleEpisode(Guid id, int order)
         {
             return await this.Context.Episodes.AsNoTracking().SingleOrDefaultAsync(x => x.MangaId == id && x.Order == order);
         }

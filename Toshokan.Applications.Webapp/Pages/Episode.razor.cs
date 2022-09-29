@@ -23,14 +23,14 @@ namespace Toshokan.Applications.Webapp.Pages
     public partial class Episode
     {
         [Inject]
-        public DataService DataService { get; set; }
+        public DataService? DataService { get; set; }
 
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        public NavigationManager? NavigationManager { get; set; }
 
 
         [Parameter]
-        public string EpisodeId { get; set; }
+        public string? EpisodeId { get; set; }
 
         public Libraries.Models.Manga? CurrentManga { get; set; }
         public Libraries.Models.Episode? CurrentEpisode { get; set; }
@@ -49,7 +49,7 @@ namespace Toshokan.Applications.Webapp.Pages
 
         public async Task QueueEpisode()
         {
-            if (this.CurrentEpisode != null)
+            if (this.CurrentEpisode != null && this.CurrentManga != null && this.DataService != null)
             {
                 await DataService.SetQueueEpisode(this.CurrentManga.Id, this.CurrentEpisode.Id);
                 this.CurrentEpisode.Queued = true;
@@ -63,8 +63,6 @@ namespace Toshokan.Applications.Webapp.Pages
             {
                 if (forwards)
                 {
-                    Console.WriteLine($"forward");
-                    var pageBackup = CurrentPage;
                     var newOrder = CurrentPage + 1;
 
                     // Case for not being processed, skip to next
@@ -73,34 +71,35 @@ namespace Toshokan.Applications.Webapp.Pages
                         // Navitage to next if exists
                         if (this.NextEpisode != null)
                         {
-                            NavigationManager.NavigateTo($"/episode/{this.NextEpisode.Id}");
+                            NavigationManager?.NavigateTo($"/episode/{this.NextEpisode.Id}");
                         }
                     }
 
                     if (newOrder >= TotalPages)
                     {
-                        // Mark as read and redirect 
-                        if (this.CurrentEpisode.Processed)
+                        if (this.CurrentManga != null && this.CurrentEpisode != null && this.DataService != null)
                         {
-                            // Set is as read if it was processed
-                            await DataService.SetReadEpisode(this.CurrentManga.Id, this.CurrentEpisode.Id);
+                            // Mark as read and redirect 
+                            if (this.CurrentEpisode.Processed)
+                            {
+                                // Set is as read if it was processed
+                                await DataService.SetReadEpisode(this.CurrentManga.Id, this.CurrentEpisode.Id);
 
-                            // Navitage to next if exists
-                            if (this.NextEpisode != null)
-                            {
-                                NavigationManager.NavigateTo($"/episode/{this.NextEpisode.Id}");
-                            }
-                            else
-                            {
-                                NavigationManager.NavigateTo($"/manga/{this.CurrentManga.Id}");
+                                // Navitage to next if exists
+                                if (this.NextEpisode != null)
+                                {
+                                    NavigationManager?.NavigateTo($"/episode/{this.NextEpisode.Id}");
+                                }
+                                else
+                                {
+                                    NavigationManager?.NavigateTo($"/manga/{this.CurrentManga.Id}");
+                                }
                             }
                         }
                     }
                     else
                     {
-
                         // Load next page first
-                        if (this.Pages.Any(x => x.Order == newOrder))
                         {
                             CurrentPage++;
                             this.SelectedPage = this.Pages[CurrentPage];
@@ -114,14 +113,18 @@ namespace Toshokan.Applications.Webapp.Pages
                             if (!Loading)
                             {
                                 Loading = true;
-                                var newPages = await DataService.GetPages(this.CurrentManga.Id, this.CurrentEpisode.Id, this.Pages.Count(), Buffer);
-                                this.Pages.AddRange(newPages);
+
+                                if (this.CurrentManga != null && this.CurrentEpisode != null && this.DataService != null)
+                                {
+                                    var newPages = await DataService.GetPages(this.CurrentManga.Id, this.CurrentEpisode.Id, this.Pages.Count(), Buffer);
+                                    this.Pages.AddRange(newPages);
+                                }
+
                                 Loading = false;
                             }
 
                             StateHasChanged();
                         }
-
                     }
                 }
                 else
@@ -135,9 +138,9 @@ namespace Toshokan.Applications.Webapp.Pages
                     else
                     {
                         // Navitage to next if exists
-                        if (this.PreviousEpisode != null)
+                        if (this.PreviousEpisode != null && !this.Loading)
                         {
-                            NavigationManager.NavigateTo($"/episode/{this.PreviousEpisode.Id}");
+                            NavigationManager?.NavigateTo($"/episode/{this.PreviousEpisode.Id}");
                         }
                     }
                 }
@@ -172,44 +175,46 @@ namespace Toshokan.Applications.Webapp.Pages
 
                 if (parsed)
                 {
-                    this.CurrentEpisode = await DataService.GetSingleEpisode(parsedEpisodeId);
-
-                    if (this.CurrentEpisode == null)
+                    if (DataService != null)
                     {
-                        // Something went wrong or missing, go to 404
-                        NavigationManager.NavigateTo("/404");
-                    }
-                    else
-                    {
-                        this.CurrentManga = await DataService.GetSingleManga(this.CurrentEpisode.MangaId);
+                        this.CurrentEpisode = await DataService.GetSingleEpisode(parsedEpisodeId);
 
-                        this.PreviousEpisode = await DataService.GetSingleEpisode(this.CurrentManga.Id, this.CurrentEpisode.Order - 1);
-                        this.NextEpisode = await DataService.GetSingleEpisode(this.CurrentManga.Id, this.CurrentEpisode.Order + 1);
-                        StateHasChanged();
-
-                        // Initia load should get first 3
-                        this.Pages = await DataService.GetPages(this.CurrentManga.Id, this.CurrentEpisode.Id, CurrentPage, Buffer);
-                        this.TotalPages = await DataService.GetPagesCount(this.CurrentManga.Id, this.CurrentEpisode.Id);
-
-                        if (this.Pages.Count > 0)
+                        if (this.CurrentEpisode == null)
                         {
-                            this.SelectedPage = this.Pages[CurrentPage];
+                            // Something went wrong or missing, go to 404
+                            NavigationManager?.NavigateTo("/404");
                         }
+                        else
+                        {
+                            this.CurrentManga = await DataService.GetSingleManga(this.CurrentEpisode.MangaId);
 
-                        StateHasChanged();
+                            this.PreviousEpisode = await DataService.GetSingleEpisode(this.CurrentManga.Id, this.CurrentEpisode.Order - 1);
+                            this.NextEpisode = await DataService.GetSingleEpisode(this.CurrentManga.Id, this.CurrentEpisode.Order + 1);
+                            StateHasChanged();
 
+                            // Initia load should get first 3
+                            this.Pages = await DataService.GetPages(this.CurrentManga.Id, this.CurrentEpisode.Id, CurrentPage, Buffer);
+                            this.TotalPages = await DataService.GetPagesCount(this.CurrentManga.Id, this.CurrentEpisode.Id);
+
+                            if (this.Pages.Count > 0)
+                            {
+                                this.SelectedPage = this.Pages[CurrentPage];
+                            }
+
+                            StateHasChanged();
+                        }
                     }
                 }
                 else
                 {
                     // Something went wrong or missing, go to 404
-                    NavigationManager.NavigateTo("/404");
+                    NavigationManager?.NavigateTo("/404");
                 }
             }
             else
             {
                 // Something went wrong or missing, go to 404
-                NavigationManager.NavigateTo("/404");
+                NavigationManager?.NavigateTo("/404");
             }
         }
     }

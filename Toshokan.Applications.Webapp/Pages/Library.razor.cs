@@ -23,18 +23,18 @@ namespace Toshokan.Applications.Webapp.Pages
     public partial class Library
     {
         [Inject]
-        public DataService DataService { get; set; }
+        public DataService? DataService { get; set; }
 
         [Parameter]
         public string? Type { get; set; }
 
 
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
 
         #region Library
 
-        public List<Libraries.Models.Manga> MangaList { get; set; }
+        public List<Libraries.Models.Manga>? MangaList { get; set; }
 
         #endregion
 
@@ -42,18 +42,27 @@ namespace Toshokan.Applications.Webapp.Pages
 
         public async Task Process(Guid id)
         {
-            await DataService.Process(id);
-            await Load();
+            if (this.DataService != null)
+            {
+                await DataService.Process(id);
+                await Load();
+            }
         }
         public async Task ToggleStatus(Guid id, bool status)
         {
-            await DataService.ToggleStatus(id, status);
-            await Load();
+            if (this.DataService != null)
+            {
+                await DataService.ToggleStatus(id, status);
+                await Load();
+            }
         }
         public async Task Delete(Guid id, bool status)
         {
-            await DataService.Delete(id, status);
-            await Load();
+            if (this.DataService != null)
+            {
+                await DataService.Delete(id, status);
+                await Load();
+            }
         }
 
         public async Task Load()
@@ -80,7 +89,10 @@ namespace Toshokan.Applications.Webapp.Pages
                     break;
             }
 
-            this.MangaList = await DataService.GetManga(this.Type);
+            if (this.DataService != null)
+            {
+                this.MangaList = await DataService.GetManga(this.Type);
+            }
         }
 
         #endregion

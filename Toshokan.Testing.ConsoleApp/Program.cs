@@ -15,7 +15,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<IService, PageService>()
     .BuildServiceProvider();
 
-var initializer = serviceProvider.GetService<DbInitialiser>();
+var initializer = serviceProvider.GetRequiredService<DbInitialiser>();
 
 initializer.Run();
 

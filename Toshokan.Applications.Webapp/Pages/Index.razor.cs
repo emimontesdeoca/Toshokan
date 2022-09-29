@@ -62,19 +62,28 @@ namespace Toshokan.Applications.Webapp.Pages
 
         #region Overrides
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                this.TotalMangas = await DataService.GetTotalMangas();
+                this.TotalEpisodes = await DataService.GetTotalEpisodes();
+                this.TotalPages = await DataService.GetTotalPages();
+                this.TotalMangasToday = await DataService.GetTotalMangasToday();
+                this.TotalEpisodesToday = await DataService.GetTotalEspisodesToday();
+                this.TotalPagesToday = await DataService.GetTotalPagesToday();
+
+                this.LatestNotifications = await DataService.GetNotifications(0, 15);
+                this.LatestMangasProcessed = await DataService.GetLatestMangaProcessed(0, 4);
+                this.LatestEpisodeAdded = await DataService.GetLatestEpisodeAdded(0, 8);
+                this.MangaList = await DataService.GetLatestManga(0, 10);
+
+                StateHasChanged();
+            }
+        }
+
         protected override async Task OnInitializedAsync()
         {
-            this.TotalMangas = await DataService.GetTotalMangas();
-            this.TotalEpisodes = await DataService.GetTotalEpisodes();
-            this.TotalPages = await DataService.GetTotalPages();
-            this.TotalMangasToday = await DataService.GetTotalMangasToday();
-            this.TotalEpisodesToday = await DataService.GetTotalEspisodesToday();
-            this.TotalPagesToday = await DataService.GetTotalPagesToday();
-
-            this.LatestNotifications = await DataService.GetNotifications(0, 15);
-            this.LatestMangasProcessed = await DataService.GetLatestMangaProcessed(0, 4);
-            this.LatestEpisodeAdded = await DataService.GetLatestEpisodeAdded(0, 8);
-            this.MangaList = await DataService.GetLatestManga(0, 10);
         }
 
         #endregion

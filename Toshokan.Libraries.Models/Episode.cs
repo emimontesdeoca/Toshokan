@@ -11,8 +11,8 @@ namespace Toshokan.Libraries.Models
     {
         public Guid Id { get; set; }
         public Guid MangaId { get; set; }
-        public string Name { get; set; }
-        public string Url { get; set; }
+        public string? Name { get; set; }
+        public string? Url { get; set; }
         public int Order { get; set; }
         public bool Processed { get; set; }
         public bool Queued { get; set; }

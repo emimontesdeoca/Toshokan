@@ -27,35 +27,38 @@ namespace Toshokan.Libraries.Services
 
             foreach (var manga in unprocessedMangas)
             {
-                LogUtils.Log($"Processing '{manga.Url}'");
+                if (manga.Url != null)
+                {
+                    LogUtils.Log($"Processing '{manga.Url}'");
 
-                // Get data
-                var data = await Shared.WebClientUtils.GetStringAsync(manga.Url);
+                    // Get data
+                    var data = await Shared.WebClientUtils.GetStringAsync(manga.Url);
 
-                // Get information from HTML
-                manga.Name = this.GetName(data);
-                manga.AlternativeName = this.GetAlternativeName(data);
-                manga.Genres = this.GetGenres(data);
-                manga.Authors = this.GetAuthors(data);
-                manga.Status = this.GetStatus(data);
-                manga.Summary = this.GetSummary(data);
-                manga.Poster = await this.GetPoster(data);
+                    // Get information from HTML
+                    manga.Name = this.GetName(data);
+                    manga.AlternativeName = this.GetAlternativeName(data);
+                    manga.Genres = this.GetGenres(data);
+                    manga.Authors = this.GetAuthors(data);
+                    manga.Status = this.GetStatus(data);
+                    manga.Summary = this.GetSummary(data);
+                    manga.Poster = await this.GetPoster(data);
 
-                // Dates
-                manga.UpdatedAt = DateTime.UtcNow;
+                    // Dates
+                    manga.UpdatedAt = DateTime.UtcNow;
 
-                // State
-                manga.Enabled = true;
-                manga.Processed = true;
+                    // State
+                    manga.Enabled = true;
+                    manga.Processed = true;
 
-                // Notificaiton
-                var notification = new Notification($"Manga '{manga.Name}' has been processed", $"/manga/{manga.Id}");
-                await Context.Notifications.AddAsync(notification);
+                    // Notificaiton
+                    var notification = new Notification($"Manga '{manga.Name}' has been processed", $"/manga/{manga.Id}");
+                    await Context.Notifications.AddAsync(notification);
 
-                // Save
-                await Context.SaveChangesAsync();
+                    // Save
+                    await Context.SaveChangesAsync();
 
-                LogUtils.Log($"Manga '{manga.Name}' processed");
+                    LogUtils.Log($"Manga '{manga.Name}' processed");
+                }
             }
 
             LogUtils.Log("Finished MangaService process");
@@ -150,8 +153,6 @@ namespace Toshokan.Libraries.Services
 
         private async Task<string> GetPoster(string data)
         {
-            byte[] result;
-
             var posterUrl = data
                 .Split(new string[] { "<div class=\"manga-info-pic\">" }, StringSplitOptions.None)[1]
                 .Split(new string[] { "src=\"" }, StringSplitOptions.None)[1]

@@ -22,17 +22,19 @@ namespace Toshokan.Applications.Webapp.Pages
     public partial class Manga
     {
         [Inject]
-        public DataService DataService { get; set; }
+        public DataService? DataService { get; set; }
 
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        public NavigationManager? NavigationManager { get; set; }
 
         [Parameter]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
-        public Libraries.Models.Manga CurrentManga { get; set; }
+        public MarkupString? SummaryMarkup { get; set; }
+
+        public Libraries.Models.Manga? CurrentManga { get; set; }
 
         public List<Libraries.Models.Episode>? Episodes { get; set; }
 
@@ -41,13 +43,14 @@ namespace Toshokan.Applications.Webapp.Pages
             this.CurrentManga = null;
             StateHasChanged();
 
-            if (!string.IsNullOrEmpty(this.Id))
+            if (!string.IsNullOrEmpty(this.Id) && NavigationManager != null)
             {
                 var parsed = Guid.TryParse(Id, out var episodeId);
 
-                if (parsed)
+                if (parsed && this.DataService != null)
                 {
                     this.CurrentManga = await DataService.GetSingleManga(episodeId);
+                    this.SummaryMarkup = (MarkupString)(this.CurrentManga?.Summary ?? string.Empty);
                     StateHasChanged();
 
                     if (this.CurrentManga == null)
@@ -65,7 +68,10 @@ namespace Toshokan.Applications.Webapp.Pages
             }
             else
             {
-                NavigationManager.NavigateTo("/");
+                if (NavigationManager != null)
+                {
+                    NavigationManager.NavigateTo("/");
+                }
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Toshokan.Libraries.Shared.Utils
 {
     public class BadgeUtils
     {
-        public static string[] SplitForBadges(string data)
+        public static string[] SplitForBadges(string? data)
         {
             if (data != null)
             {

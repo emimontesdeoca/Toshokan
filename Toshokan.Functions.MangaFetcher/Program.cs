@@ -14,8 +14,8 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<PageService>()
     .BuildServiceProvider();
 
-var service = serviceProvider.GetService<MangaService>();
-var initializer = serviceProvider.GetService<DbInitialiser>();
+var service = serviceProvider.GetRequiredService<MangaService>();
+var initializer = serviceProvider.GetRequiredService<DbInitialiser>();
 
 initializer.Run();
 

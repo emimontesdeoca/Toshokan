@@ -25,19 +25,19 @@ namespace Toshokan.Applications.Webapp.Shared
         #region Injects
 
         [Inject]
-        public DataService DataService { get; set; }
+        public DataService? DataService { get; set; }
 
         [Inject]
-        public IJSRuntime IJSRuntime { get; set; }
+        public IJSRuntime? IJSRuntime { get; set; }
 
         #endregion
 
 
         #region Properties
 
-        public List<Notification> Notifications { get; set; }
+        public List<Notification>? Notifications { get; set; }
 
-        public NewMangaModalComponent NewMangaModalComponent { get; set; } = new NewMangaModalComponent();
+        public NewMangaModalComponent? NewMangaModalComponent { get; set; } = new NewMangaModalComponent();
 
         #endregion
 
@@ -45,14 +45,35 @@ namespace Toshokan.Applications.Webapp.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            this.Notifications = await DataService.GetNotifications(0, 5);
+            if (this.DataService != null)
+            {
+                this.Notifications = await DataService.GetNotifications(0, 5);
+            }
         }
 
-        public async Task ToggleTheme() => await IJSRuntime.InvokeVoidAsync("toggleTheme");
+        public async Task ToggleTheme()
+        {
+            if (this.IJSRuntime != null)
+            {
+                await IJSRuntime.InvokeVoidAsync("toggleTheme");
+            }
+        }
 
-        public async Task CloseToggle() => await IJSRuntime.InvokeVoidAsync("hideDropdownClick");
+        public async Task CloseToggle()
+        {
+            if (this.IJSRuntime != null)
+            {
+                await IJSRuntime.InvokeVoidAsync("hideDropdownClick");
+            }
+        }
 
-        public async Task OpenModal() => this.NewMangaModalComponent.Toggle();
+        public void OpenModal()
+        {
+            if (this.NewMangaModalComponent != null)
+            {
+                this.NewMangaModalComponent.Toggle();
+            }
+        }
 
         #endregion
     }

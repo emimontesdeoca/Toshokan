@@ -27,60 +27,63 @@ namespace Toshokan.Libraries.Services
 
             foreach (var manga in processedMangas)
             {
-                LogUtils.Log($"Processing {manga.Name}");
-
-                var data = await Shared.WebClientUtils.GetStringAsync(manga.Url);
-
-                // Get episodes
-                var episodesString = data
-                    .Split(new string[] { "<div class=\"manga-info-chapter\">" }, StringSplitOptions.None)[1]
-                    .Split(new string[] { "<div class=\"chapter-list\">" }, StringSplitOptions.None)[1]
-                    .Split(new string[] { "<div class=\"comment-info\">" }, StringSplitOptions.None)[0];
-
-                var episodeSplit = episodesString
-                    .Split(new string[] { "<div class=\"row\">" }, StringSplitOptions.None);
-
-                LogUtils.Log($"Found {episodeSplit.Count() - 1} episodes for '{manga.Name}'");
-
-                var order = 0;
-                foreach (var item in episodeSplit.Skip(1).Reverse())
+                if (manga.Url != null)
                 {
-                    var episodeUrl = item
-                    .Split(new string[] { "<a href=\"" }, StringSplitOptions.None)[1]
-                    .Split(new string[] { "\"" }, StringSplitOptions.None)[0];
+                    LogUtils.Log($"Processing {manga.Name}");
 
-                    var name = item
-                   .Split(new string[] { "<a href=\"" }, StringSplitOptions.None)[1]
-                   .Split(new string[] { ">" }, StringSplitOptions.None)[1]
-                   .Split(new string[] { "<" }, StringSplitOptions.None)[0];
+                    var data = await Shared.WebClientUtils.GetStringAsync(manga.Url);
 
-                    // Here we check if this url is on the database, we have to keep the order tho
-                    if (!(await Context.Episodes.Where(x => x.Url == episodeUrl && x.MangaId == manga.Id).AnyAsync()))
+                    // Get episodes
+                    var episodesString = data
+                        .Split(new string[] { "<div class=\"manga-info-chapter\">" }, StringSplitOptions.None)[1]
+                        .Split(new string[] { "<div class=\"chapter-list\">" }, StringSplitOptions.None)[1]
+                        .Split(new string[] { "<div class=\"comment-info\">" }, StringSplitOptions.None)[0];
+
+                    var episodeSplit = episodesString
+                        .Split(new string[] { "<div class=\"row\">" }, StringSplitOptions.None);
+
+                    LogUtils.Log($"Found {episodeSplit.Count() - 1} episodes for '{manga.Name}'");
+
+                    var order = 0;
+                    foreach (var item in episodeSplit.Skip(1).Reverse())
                     {
-                        // Create episode
-                        var episode = new Episode(manga.Id, episodeUrl, name, order, manga.ProcessDirectly);
+                        var episodeUrl = item
+                        .Split(new string[] { "<a href=\"" }, StringSplitOptions.None)[1]
+                        .Split(new string[] { "\"" }, StringSplitOptions.None)[0];
 
-                        // Add to context
-                        await Context.Episodes.AddAsync(episode);
+                        var name = item
+                       .Split(new string[] { "<a href=\"" }, StringSplitOptions.None)[1]
+                       .Split(new string[] { ">" }, StringSplitOptions.None)[1]
+                       .Split(new string[] { "<" }, StringSplitOptions.None)[0];
 
-                        // Update manga
-                        manga.UpdatedAt = DateTime.UtcNow;
+                        // Here we check if this url is on the database, we have to keep the order tho
+                        if (!(await Context.Episodes.Where(x => x.Url == episodeUrl && x.MangaId == manga.Id).AnyAsync()))
+                        {
+                            // Create episode
+                            var episode = new Episode(manga.Id, episodeUrl, name, order, manga.ProcessDirectly);
 
-                        LogUtils.Log($"Added '{episode.Name}' episode to '{manga.Name}'");
+                            // Add to context
+                            await Context.Episodes.AddAsync(episode);
 
-                        // Create notification
-                        var notification = new Notification($"Added '{episode.Name}' episode to '{manga.Name}'", $"/episode/{episode.Id}");
-                        await Context.Notifications.AddAsync(notification);
+                            // Update manga
+                            manga.UpdatedAt = DateTime.UtcNow;
+
+                            LogUtils.Log($"Added '{episode.Name}' episode to '{manga.Name}'");
+
+                            // Create notification
+                            var notification = new Notification($"Added '{episode.Name}' episode to '{manga.Name}'", $"/episode/{episode.Id}");
+                            await Context.Notifications.AddAsync(notification);
+                        }
+
+                        order++;
                     }
 
-                    order++;
+                    // Update next date to check
+                    manga.NextCheck = DateTime.UtcNow.AddHours(manga.Interval);
+
+                    // Save everything
+                    await Context.SaveChangesAsync();
                 }
-
-                // Update next date to check
-                manga.NextCheck = DateTime.UtcNow.AddHours(manga.Interval);
-
-                // Save everything
-                await Context.SaveChangesAsync();
             }
 
             LogUtils.Log("Finished EpisodeService process");

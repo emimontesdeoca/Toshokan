@@ -22,19 +22,20 @@ namespace Toshokan.Applications.Webapp.Components
     public partial class NewMangaModalComponent
     {
         [Inject]
-        public DataService DataService { get; set; }
+        public DataService? DataService { get; set; }
 
-        public string Url { get; set; }
+        public string? Url { get; set; }
         public bool ProcessDirectly { get; set; }
         public bool Enabled { get; set; }
         public int HoursInterval { get; set; } = 1;
         public bool State { get; set; } = false;
 
-        protected override async Task OnParametersSetAsync()
+        protected override void OnParametersSet()
         {
-            this.Url = string.Empty;
-            this.Enabled = false;
-            this.ProcessDirectly = false;
+            Url = string.Empty;
+            Enabled = false;
+            ProcessDirectly = false;
+            base.OnParametersSet();
         }
 
         public void Toggle()
@@ -70,8 +71,11 @@ namespace Toshokan.Applications.Webapp.Components
 
                 if (this.Url.Contains("mangakakalot"))
                 {
-                    await DataService.AddManga(this.Url, this.ProcessDirectly, this.Enabled, this.HoursInterval);
-                    Toggle();
+                    if (this.DataService != null)
+                    {
+                        await DataService.AddManga(this.Url, this.ProcessDirectly, this.Enabled, this.HoursInterval);
+                        Toggle();
+                    }
                 }
                 else
                 {

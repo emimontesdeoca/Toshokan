@@ -8,8 +8,8 @@ namespace Toshokan.Libraries.Models
 {
     public class EpisodeAdded
     {
-        public string Poster { get; set; }
-        public string Name { get; set; }
-        public string Id { get; set; }
+        public string? Poster { get; set; }
+        public string? Name { get; set; }
+        public string? Id { get; set; }
     }
 }
