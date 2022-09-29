@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
@@ -142,9 +143,23 @@ namespace Toshokan.Libraries.Services
             return await this.Context.Episodes.AsNoTracking().Where(x => x.MangaId == id).OrderByDescending(x => x.Order).ToListAsync();
         }
 
-        public async Task<List<Page>> GetPages(Guid mangaId, Guid episodeId)
+        public async Task<List<Page>> GetPages(Guid mangaId, Guid episodeId, int skip, int take)
         {
-            return await this.Context.Pages.AsNoTracking().Where(x => x.MangaId == mangaId && x.EpisodeId == episodeId).OrderByDescending(x => x.Order).ToListAsync();
+            return await this.Context.Pages
+                .AsNoTracking()
+                .Where(x => x.MangaId == mangaId && x.EpisodeId == episodeId)
+                .OrderBy(x => x.Order)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetPagesCount(Guid mangaId, Guid episodeId)
+        {
+            return await this.Context.Pages
+                .AsNoTracking()
+                .Where(x => x.MangaId == mangaId && x.EpisodeId == episodeId)
+                .CountAsync();
         }
 
         public async Task Process(Guid id)

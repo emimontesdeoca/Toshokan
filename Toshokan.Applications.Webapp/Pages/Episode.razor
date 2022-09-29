@@ -2,7 +2,7 @@
 
 <PageTitle>Toshokon → @CurrentManga?.Name → @CurrentEpisode?.Name</PageTitle>
 
-<div class="page-body">
+<div class="page-body" tabindex="0" @onkeydown=KeyboardEventHandler>
 
     <div class="container-xl">
         <div class="row row-cards mb-3">
@@ -27,19 +27,31 @@
                                     </ol>
                                 }
                             </div>
-                            <h2 class="page-title">
-                                @if (@CurrentEpisode == null)
-                                {
-                                    <div class="placeholder col-5"></div>
-                                }
-                                else
-                                {
-                                    @CurrentEpisode?.Name
-                                }
-                            </h2>
+                            <div class="d-flex align-items-center">
 
+                                <h2 class="page-title">
+                                    @if (@CurrentEpisode == null)
+                                    {
+                                        <div class="placeholder col-5"></div>
+                                    }
+                                    else
+                                    {
+                                        @CurrentEpisode?.Name
+                                    }
+                                    @if (this.SelectedPage != null)
+                                    {
+                                        <small class="ms-2 page-pretitle">@(this.SelectedPage.Order + 1) / @(this.TotalPages)</small>
+                                    }
+
+                                    @if (this.Loading)
+                                    {
+                                        <div class="spinner-border spinner-border-sm ms-2" role="status"></div>
+                                    }
+                                </h2>
+
+                            </div>
                         </div>
-                        <div class="col-12 col-md-auto ms-auto d-print-none">
+                        <div class="col-12 col-md-auto ms-auto d-print-none d-flex justify-content-center align-items-center">
                             <div class="btn-list">
                                 @if (this.CurrentEpisode == null)
                                 {
@@ -51,7 +63,7 @@
                                 {
                                     if (this.PreviousEpisode != null)
                                     {
-                                        <a href="/episode/@this.PreviousEpisode.Id" class="btn btn-outline-secondary d-none d-sm-inline-block">
+                                        <a href="/episode/@this.PreviousEpisode.Id" class="btn btn-outline-secondary">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -93,7 +105,7 @@
             </div>
 
         </div>
-        <div class="row row-cards mb-3">
+        <div class="d-flex justify-content-center">
             @if (this.CurrentEpisode == null)
             {
                 <div class="d-flex justify-content-center" style="padding: 20rem;">
@@ -149,58 +161,10 @@
                     {
                         @if (this.Pages != null)
                         {
-                            foreach (var p in this.Pages)
+                            @if (this.Pages.Count > this.CurrentPage)
                             {
-                                <img src="@p.Data" />
+                                <img class="manga-page" src="@this.Pages[this.CurrentPage].Data" />
                             }
-
-                            <div class="btn-list d-flex justify-content-center">
-                                @if (this.CurrentEpisode == null)
-                                {
-                                    <button class="btn btn-outline-secondary  btn-loading">
-                                        Button with
-                                    </button>
-                                }
-                                else
-                                {
-                                    if (this.PreviousEpisode != null)
-                                    {
-                                        <a href="/episode/@this.PreviousEpisode.Id" class="btn btn-outline-secondary d-none d-sm-inline-block">
-                                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <line x1="5" y1="12" x2="19" y2="12" />
-                                                <line x1="5" y1="12" x2="9" y2="16" />
-                                                <line x1="5" y1="12" x2="9" y2="8" />
-                                            </svg>
-                                            @this.PreviousEpisode.Name
-                                        </a>
-                                    }
-                                }
-
-                                @if (this.CurrentEpisode == null)
-                                {
-                                    <button class="btn btn-outline-secondary  btn-loading">
-                                        Button with
-                                    </button>
-                                }
-                                else
-                                {
-                                    @if (this.NextEpisode != null)
-                                    {
-                                        <a href="/episode/@this.NextEpisode.Id" class="btn btn-outline-secondary d-none d-sm-inline-block">
-                                            @this.NextEpisode.Name
-                                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <line x1="5" y1="12" x2="19" y2="12" />
-                                                <line x1="15" y1="16" x2="19" y2="12" />
-                                                <line x1="15" y1="8" x2="19" y2="12" />
-                                            </svg>
-                                        </a>
-                                    }
-                                }
-                            </div>
                         }
                         else
                         {

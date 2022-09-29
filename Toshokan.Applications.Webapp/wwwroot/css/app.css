@@ -14,3 +14,12 @@
 .modal-blur {
     background-color: rgba(0, 0, 0, 0.15) !important;
 }
+
+.manga-page {
+    max-height: Calc(75vh + 30px)
+}
+
+*:focus-visible {
+    outline: none !important;
+}
+
