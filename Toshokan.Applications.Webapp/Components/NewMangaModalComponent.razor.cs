@@ -24,6 +24,9 @@ namespace Toshokan.Applications.Webapp.Components
         [Inject]
         public DataService? DataService { get; set; }
 
+        [Inject]
+        public NotifierService NotificationService { get; set; }
+
         public string? Url { get; set; }
         public bool ProcessDirectly { get; set; }
         public bool Enabled { get; set; }
@@ -74,6 +77,7 @@ namespace Toshokan.Applications.Webapp.Components
                     if (this.DataService != null)
                     {
                         await DataService.AddManga(this.Url, this.ProcessDirectly, this.Enabled, this.HoursInterval);
+                        await NotificationService.Update();
                         Toggle();
                     }
                 }

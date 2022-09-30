@@ -4,10 +4,12 @@ using Toshokan.Libraries.Data;
 using Toshokan.Libraries.Services;
 using Toshokan.Libraries.Shared.Interfaces;
 
-//setup our DI
+// Connection string 
+var cs = "Server=db;Database=Toshokan;User Id=sa;Password=P@ssword01;";
+
+// Setup our DI
 var serviceProvider = new ServiceCollection()
-     .AddDbContext<Context>(
-        options => options.UseSqlServer("Server=.;Database=Toshokan;Trusted_Connection=True;"))
+    .AddDbContext<Context>(options => options.UseSqlServer(cs, builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)), ServiceLifetime.Transient)
     .AddTransient<DbInitialiser>()
     .AddTransient<MangaService>()
     .AddTransient<EpisodeService>()
@@ -17,10 +19,11 @@ var serviceProvider = new ServiceCollection()
 var service = serviceProvider.GetRequiredService<MangaService>();
 var initializer = serviceProvider.GetRequiredService<DbInitialiser>();
 
-initializer.Run();
-
-while (true)
+while (!await initializer.CanConnect())
 {
-    await service.Process();
-    await Task.Delay(TimeSpan.FromMinutes(1));
+    while (true)
+    {
+        await service.Process();
+        await Task.Delay(TimeSpan.FromMinutes(1));
+    }
 }

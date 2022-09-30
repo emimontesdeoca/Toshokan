@@ -25,6 +25,9 @@ namespace Toshokan.Applications.Webapp.Pages
         [Inject]
         public DataService DataService { get; set; }
 
+        [Inject]
+        public NotifierService NotificationService { get; set; }
+
         #region Dashboard boxes
 
         public int? TotalMangas { get; set; }
@@ -60,31 +63,73 @@ namespace Toshokan.Applications.Webapp.Pages
 
         #endregion
 
+        #region Methods
+
+        protected override void OnInitialized()
+        {
+            NotificationService.Notify += OnNotify;
+        }
+
+        public async Task OnNotify()
+        {
+            await InvokeAsync(async () =>
+            {
+                await Default();
+                StateHasChanged();
+
+                await Load();
+                StateHasChanged();
+            });
+        }
+
+        #endregion
+
         #region Overrides
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                this.TotalMangas = await DataService.GetTotalMangas();
-                this.TotalEpisodes = await DataService.GetTotalEpisodes();
-                this.TotalPages = await DataService.GetTotalPages();
-                this.TotalMangasToday = await DataService.GetTotalMangasToday();
-                this.TotalEpisodesToday = await DataService.GetTotalEspisodesToday();
-                this.TotalPagesToday = await DataService.GetTotalPagesToday();
+                await Default();
+                StateHasChanged();
 
-                this.LatestNotifications = await DataService.GetNotifications(0, 15);
-                this.LatestMangasProcessed = await DataService.GetLatestMangaProcessed(0, 4);
-                this.LatestEpisodeAdded = await DataService.GetLatestEpisodeAdded(0, 8);
-                this.MangaList = await DataService.GetLatestManga(0, 10);
-
+                await Load();
                 StateHasChanged();
             }
         }
 
-        protected override async Task OnInitializedAsync()
+        public async Task Load()
         {
+            this.TotalMangas = await DataService.GetTotalMangas();
+            this.TotalEpisodes = await DataService.GetTotalEpisodes();
+            this.TotalPages = await DataService.GetTotalPages();
+            this.TotalMangasToday = await DataService.GetTotalMangasToday();
+            this.TotalEpisodesToday = await DataService.GetTotalEspisodesToday();
+            this.TotalPagesToday = await DataService.GetTotalPagesToday();
+
+            this.LatestNotifications = await DataService.GetNotifications(0, 15);
+            this.LatestMangasProcessed = await DataService.GetLatestMangaProcessed(0, 4);
+            this.LatestEpisodeAdded = await DataService.GetLatestEpisodeAdded(0, 8);
+            this.MangaList = await DataService.GetLatestManga(0, 10);
         }
+
+        public async Task Default()
+        {
+            this.TotalMangas = null;
+            this.TotalEpisodes = null;
+            this.TotalPages = null;
+            this.TotalMangasToday = null;
+            this.TotalEpisodesToday = null;
+            this.TotalPagesToday = null;
+
+            this.LatestNotifications = null;
+            this.LatestMangasProcessed = null;
+            this.LatestEpisodeAdded = null;
+            this.MangaList = null;
+
+            StateHasChanged();
+        }
+
 
         #endregion
     }

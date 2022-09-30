@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Testing.ConsoleApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toshokan.Applications.Webapp", "Toshokan.Applications.Webapp\Toshokan.Applications.Webapp.csproj", "{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8E5D0B76-9BCB-4483-89EF-AAA9C903A91C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CECD087-1A8F-40C4-8BC5-AA6E56E6A4B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E5D0B76-9BCB-4483-89EF-AAA9C903A91C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E5D0B76-9BCB-4483-89EF-AAA9C903A91C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E5D0B76-9BCB-4483-89EF-AAA9C903A91C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E5D0B76-9BCB-4483-89EF-AAA9C903A91C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

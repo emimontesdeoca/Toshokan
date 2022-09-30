@@ -88,6 +88,8 @@ namespace Toshokan.Libraries.Services
                 episode.Queued = false;
                 episode.UpdatedAt = DateTime.UtcNow;
 
+                LogUtils.Log($"Updated {episode.Name}");
+
                 // Save
                 await Context.SaveChangesAsync();
             }

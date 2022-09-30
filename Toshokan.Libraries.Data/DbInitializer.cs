@@ -15,10 +15,21 @@ namespace Toshokan.Libraries.Data
             _context = context;
         }
 
-        public void Run()
+        public async Task<bool> CanConnect()
         {
-            //_context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
+            try
+            {
+                return await _context.Database.CanConnectAsync();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public async Task EnsureCreated()
+        {
+            await _context.Database.EnsureCreatedAsync();
         }
     }
 }
