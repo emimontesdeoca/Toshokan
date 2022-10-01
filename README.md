@@ -12,8 +12,6 @@ An app that stores manga with automated updates, notifications, built in reader 
 
 ## Prerequisites
 
-Prequisites to run Toshokan, basically .NET 6 runtime and dicjer
-
 * docker
 * dotnet6
 
@@ -39,9 +37,8 @@ These are the steps to deploy Toshokan to docker
 
 ## Usage
 
-When it's deployed, open the applicat
+TODO
 
-<!-- LICENSE -->
 ## License
 
 Distributed under the Apache license. See `LICENSE` for more information.
